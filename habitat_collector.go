@@ -9,7 +9,8 @@ import (
 )
 
 type habitatCollector struct {
-	healthDesc *prometheus.Desc
+	healthDesc     *prometheus.Desc
+	habitatAddress string
 }
 
 type habitatService struct {
@@ -24,7 +25,7 @@ const (
 )
 
 // Constructor
-func NewHabitatCollector() prometheus.Collector {
+func NewHabitatCollector(habitatAddress string) prometheus.Collector {
 	return &habitatCollector{
 		healthDesc: prometheus.NewDesc(
 			"habitat_service_health",
@@ -32,6 +33,7 @@ func NewHabitatCollector() prometheus.Collector {
 			[]string{"service_group"},
 			nil,
 		),
+		habitatAddress: habitatAddress,
 	}
 }
 
@@ -41,14 +43,14 @@ func (c *habitatCollector) Describe(ch chan<- *prometheus.Desc) {
 
 func (c *habitatCollector) Collect(ch chan<- prometheus.Metric) {
 	services := []habitatService{}
-	err := JsonHttpGet("http://127.0.0.1:9631/services", &services)
+	err := JsonHttpGet(fmt.Sprintf("%s/services", c.habitatAddress), &services)
 	if err != nil {
 		log.Println("Error getting list of services:", err)
 		return
 	}
 
 	for _, service := range services {
-		url := fmt.Sprintf("http://127.0.0.1:9631/services/%s/health",
+		url := fmt.Sprintf("%s/services/%s/health", c.habitatAddress,
 			strings.Replace(service.ServiceGroup, ".", "/", 1))
 		httpStatus, err := HttpGetStatus(url)
 		if err != nil {

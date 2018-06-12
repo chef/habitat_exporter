@@ -25,7 +25,7 @@ import (
 )
 
 var (
-	listenAddress = flag.String("listen-address", ":9449",
+	listenAddress = flag.String("listen-address", ":9450",
 		"The address/port to listen on for HTTP requests.")
 	habitatAddress = flag.String("habitat-address", "http://127.0.0.1:9631",
 		"The address of the habitat supervisor API to query")

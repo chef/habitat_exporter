@@ -9,4 +9,4 @@ git tag "$VERSION"
 echo "=> Pushing tag"
 git push origin "$VERSION"
 
-goreleaser
+goreleaser --rm-dist

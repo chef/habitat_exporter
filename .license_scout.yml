@@ -1,0 +1,34 @@
+allowed_licenses:
+  - Apache-1.0
+  - Apache-1.1
+  - Apache-2.0
+  - Artistic-2.0
+  - BSD-2-Clause
+  - BSD-3-Clause
+  - BSD-3-Clause-Attribution
+  - BSL-2.0
+  - bzip2-1.0.6
+  - CC0-1.0
+  - CC-BY-2.0
+  - CC-BY-3.0
+  - CC-BY-4.0
+  - curl
+  - gnuplot
+  - ICU
+  - ISC
+  - MIT
+  - MPL-2.0
+  - OpenSSL
+  - PHP-3.0
+  - PHP-3.01
+  - PostgreSQL
+  - Python-2.0
+  - SAX-PD
+  - Unlicense
+  - WTFPL
+  - Zlib
+fallbacks:
+  golang:
+    - name: github.com/golang/protobuf
+      license_id: BSD-3-Clause
+      license_content: https://raw.githubusercontent.com/golang/protobuf/master/LICENSE

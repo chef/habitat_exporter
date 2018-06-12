@@ -1,2 +1,6 @@
+# Built binaries
 habitat_exporter
 dist
+
+# License scout
+habitat_exporter-dependency-licenses.json

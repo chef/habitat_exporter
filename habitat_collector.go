@@ -23,11 +23,17 @@ import (
 
 type habitatCollector struct {
 	healthDesc     *prometheus.Desc
+	releaseDesc    *prometheus.Desc
 	habitatAddress string
 }
 
 type habitatService struct {
 	ServiceGroup string `json:"service_group"`
+	Pkg          habitatPkg
+}
+
+type habitatPkg struct {
+	Release float64 `json:",string"`
 }
 
 const (
@@ -42,7 +48,13 @@ func NewHabitatCollector(habitatAddress string) prometheus.Collector {
 	return &habitatCollector{
 		healthDesc: prometheus.NewDesc(
 			"habitat_service_health",
-			"Habitat Service Health",
+			"Habitat service health",
+			[]string{"service_group"},
+			nil,
+		),
+		releaseDesc: prometheus.NewDesc(
+			"habitat_service_package_release",
+			"Habitat service's main package release number",
 			[]string{"service_group"},
 			nil,
 		),
@@ -52,6 +64,7 @@ func NewHabitatCollector(habitatAddress string) prometheus.Collector {
 
 func (c *habitatCollector) Describe(ch chan<- *prometheus.Desc) {
 	ch <- c.healthDesc
+	ch <- c.releaseDesc
 }
 
 func (c *habitatCollector) Collect(ch chan<- prometheus.Metric) {
@@ -88,6 +101,12 @@ func (c *habitatCollector) Collect(ch chan<- prometheus.Metric) {
 			c.healthDesc,
 			prometheus.GaugeValue,
 			float64(value),
+			service.ServiceGroup,
+		)
+		ch <- prometheus.MustNewConstMetric(
+			c.releaseDesc,
+			prometheus.GaugeValue,
+			float64(service.Pkg.Release),
 			service.ServiceGroup,
 		)
 	}

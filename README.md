@@ -21,6 +21,8 @@ There are two optional flags:
   active. Because prometheus can only output numeric values, the metric values
   match the habitat health_check hook (and also nagios check) exit codes: 0
   for OK, 1 for Warning, 2 for Critical, 3 for Unknown.
+* `habitat_service_package_release` - The package release number (e.g.
+  20180622123456) of the habitat package for each habitat service.
 
 ## Building
 
